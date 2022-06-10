@@ -64,7 +64,7 @@ export const genJson = (code: string): GenJsonResult => {
         json.defineEmits = []
 
         json.defineEmitsTypeParameters = callNode?.typeParameters?.params
-          .find(i => i.type === 'TSTypeReference')?.typeName.name
+          ?.find(i => i.type === 'TSTypeReference')?.typeName.name
 
         callNode?.typeParameters.params.forEach((optionNode) => {
           json.defineEmits?.push(genDefineEmitsTypescript(optionNode))
