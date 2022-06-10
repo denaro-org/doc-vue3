@@ -1,0 +1,48 @@
+{
+  "name": "doc-vue3",
+  "version": "1.0.0",
+  "description": "A API document generator for Vue3 single file component.",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
+  "scripts": {
+    "build": "tsc --build",
+    "lint": "eslint --fix"
+  },
+  "bin": {
+    "docvue3": "lib/bin/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/denaro-org/doc-vue3.git"
+  },
+  "keywords": [
+    "doc",
+    "vue",
+    "marked"
+  ],
+  "author": "vxhly <pengchengou@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/denaro-org/doc-vue3/issues"
+  },
+  "homepage": "https://github.com/denaro-org/doc-vue3#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.41",
+    "@typescript-eslint/eslint-plugin": "^5.27.1",
+    "@typescript-eslint/parser": "^5.27.1",
+    "eslint": "^8.0.1",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "typescript": "^4.7.3"
+  },
+  "dependencies": {
+    "@babel/traverse": "^7.18.2",
+    "@vue/compiler-sfc": "^3.2.37",
+    "json2md": "^1.12.0",
+    "lodash": "^4.17.21",
+    "marked": "^4.0.16",
+    "minimist": "^1.2.6"
+  }
+}
