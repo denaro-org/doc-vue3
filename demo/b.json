@@ -11,78 +11,10 @@
   ],
   "defineProps": [
     {
-      "name": "msg",
-      "desc": "",
-      "default": "\"hello\""
-    },
-    {
-      "name": "labels",
-      "desc": "",
-      "default": "() => [\"one\", \"two\"]"
-    },
-    {
-      "name": "obj",
-      "desc": "",
-      "default": "() => {\n      return { a: 2 };\n    }"
-    },
-    {
-      "name": "either",
-      "type": "",
-      "default": "",
-      "desc": "\"必传且限定\" \\| \"其中一个\" \\| \"值\""
-    },
-    {
-      "name": "pic",
+      "name": "crudName",
       "desc": "增删改查目标的名称",
-      "type": "Array as () => Array<string>",
-      "required": "true",
-      "default": "[]"
-    }
-  ],
-  "defineEmits": [
-    {
-      "name": "taps",
-      "desc": "查询列表方法"
-    },
-    {
-      "name": "click",
-      "desc": "查询列表方法"
-    },
-    {
-      "name": "downloadClick",
-      "desc": "导出按钮点击"
-    },
-    {
-      "name": "createClick",
-      "desc": "添加按钮点击"
-    },
-    {
-      "name": "showClick",
-      "desc": "查看按钮点击"
-    },
-    {
-      "name": "editClick",
-      "desc": "编辑按钮点击"
-    },
-    {
-      "name": "deleteClick",
-      "desc": "删除按钮点击"
-    },
-    {
-      "name": "detailChange",
-      "desc": "详情数据变更"
-    }
-  ],
-  "defineExpose": [
-    {
-      "name": "edit",
-      "desc": "编辑一行",
-      "params": [
-        {
-          "name": "record",
-          "desc": "该行数据"
-        }
-      ]
+      "type": "String",
+      "default": "''"
     }
   ]
 }

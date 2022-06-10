@@ -44,8 +44,8 @@ export const genJson = (code: string): GenJsonResult => {
         const argNode = callNode.arguments[0]
         json.defineProps = []
 
-        json.definePropsTypeParameters = callNode?.typeParameters.params
-          .find(i => i.type === 'TSTypeReference')?.typeName.name
+        json.definePropsTypeParameters = callNode?.typeParameters?.params
+          ?.find(i => i.type === 'TSTypeReference')?.typeName.name
 
         callNode?.typeParameters?.params?.forEach((optionNode) => {
           json.defineProps = genDefinePropsTypescript(optionNode)
@@ -63,7 +63,7 @@ export const genJson = (code: string): GenJsonResult => {
         const argNode = callNode.arguments[0]
         json.defineEmits = []
 
-        json.defineEmitsTypeParameters = callNode?.typeParameters.params
+        json.defineEmitsTypeParameters = callNode?.typeParameters?.params
           .find(i => i.type === 'TSTypeReference')?.typeName.name
 
         callNode?.typeParameters.params.forEach((optionNode) => {
