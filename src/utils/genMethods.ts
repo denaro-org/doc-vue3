@@ -11,13 +11,15 @@ export const genMethods = (methodsNode): GenMethodsResult[] => {
   methodsNode.value.properties.forEach((node) => {
     if (node.leadingComments && node.leadingComments.length) {
       const commentNode = node.leadingComments[0]
-      const descContent = commentNode.value.trim()
-      if (docIdentifierReg.test(descContent)) {
-        const method = {
-          name: node.key.name,
-          ...parseComment(commentNode)
+      if (commentNode) {
+        const descContent = commentNode.value.trim()
+        if (docIdentifierReg.test(descContent)) {
+          const method = {
+            name: node.key.name,
+            ...parseComment(commentNode)
+          }
+          result.push(method)
         }
-        result.push(method)
       }
     }
   })

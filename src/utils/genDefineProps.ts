@@ -16,13 +16,15 @@ export const genDefineProps = (propsNode): GenPropsResult => {
       }
       propsNode.value.properties.forEach((item) => {
         const valueNode = item.value
-        let value = valueNode.value ?? valueNode.name ?? valueNode.expression?.name
-        if (valueNode.type === 'ArrowFunctionExpression') {
-          value = getLocContent(valueNode.body.loc)
-        } else {
-          value = getLocContent(valueNode.loc)
+        if (valueNode) {
+          let value = valueNode.value ?? valueNode.name ?? valueNode.expression?.name
+          if (valueNode.type === 'ArrowFunctionExpression') {
+            value = getLocContent(valueNode.body.loc)
+          } else {
+            value = getLocContent(valueNode.loc)
+          }
+          prop[item.key.name] = value
         }
-        prop[item.key.name] = value
       })
       result = prop
     }

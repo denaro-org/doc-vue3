@@ -10,13 +10,15 @@ export const genDefineExpose = (methodsNode): GenMethodsResult => {
 
   if (methodsNode.leadingComments && methodsNode.leadingComments.length) {
     const commentNode = methodsNode.leadingComments[0]
-    const descContent = commentNode.value.trim()
-    if (docIdentifierReg.test(descContent)) {
-      const method = {
-        name: methodsNode.key.name,
-        ...parseComment(commentNode)
+    if (commentNode) {
+      const descContent = commentNode.value.trim()
+      if (docIdentifierReg.test(descContent)) {
+        const method = {
+          name: methodsNode.key.name,
+          ...parseComment(commentNode)
+        }
+        result = method
       }
-      result = method
     }
   }
 

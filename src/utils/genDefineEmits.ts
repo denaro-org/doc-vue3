@@ -8,13 +8,15 @@ export const genDefineEmits = (eventsNode): GenEventsResult => {
 
   if (eventsNode.leadingComments && eventsNode.leadingComments.length) {
     const commentNode = eventsNode.leadingComments[0]
-    const descContent = commentNode.value.trim()
-    if (docIdentifierReg.test(descContent)) {
-      const prop = {
-        name: eventsNode.value,
-        ...parseComment(commentNode)
+    if (commentNode) {
+      const descContent = commentNode.value.trim()
+      if (docIdentifierReg.test(descContent)) {
+        const prop = {
+          name: eventsNode.value,
+          ...parseComment(commentNode)
+        }
+        result = prop
       }
-      result = prop
     }
   }
 

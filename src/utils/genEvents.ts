@@ -9,13 +9,15 @@ export const genEvents = (eventsNode): GenEventsResult[] => {
   eventsNode.value.elements.forEach((node) => {
     if (node.leadingComments && node.leadingComments.length) {
       const commentNode = node.leadingComments[0]
-      const descContent = commentNode.value.trim()
-      if (docIdentifierReg.test(descContent)) {
-        const prop = {
-          name: node.value,
-          ...parseComment(commentNode)
+      if (commentNode) {
+        const descContent = commentNode.value.trim()
+        if (docIdentifierReg.test(descContent)) {
+          const prop = {
+            name: node.value,
+            ...parseComment(commentNode)
+          }
+          result.push(prop)
         }
-        result.push(prop)
       }
     }
   })
