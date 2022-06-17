@@ -13,7 +13,14 @@ export const genSlots = (ast: ElementNode): GenSlotsResult[] => {
       if (desc && desc.type === 3) {
         const descContent = desc.content.trim()
         if (docIdentifierReg.test(descContent)) {
-          const slot = (node.props.filter((prop) => prop.name === 'name')[0]) as any
+          let slot = (node.props.filter((prop) => prop.name === 'name')[0]) as any
+          if (!slot) {
+            slot = {
+              value: {
+                content: 'default'
+              }
+            }
+          }
           result.push({
             name: slot.value.content,
             ...parseComment({ value: descContent })
