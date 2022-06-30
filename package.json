@@ -1,6 +1,6 @@
 {
   "name": "doc-vue3",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A API document generator for Vue3 single file component.",
   "main": "lib/src/index.js",
   "types": "lib/src/index.d.ts",
