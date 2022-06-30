@@ -1,119 +1,164 @@
-<template inheritsAttr="false">
-  <div :class="[`${$prefix('dib')}`, 'lw-a-link']">
-    <a-button
-      v-if="type === 'link'"
-      class="a-btn-link"
-      :class="`${$prefix('row-center')} ${aClass}`"
-      type="link"
-      :disabled="loading || disabled"
-      v-bind="$attrs"
-    >
-      <div v-if="$slots.icon || componentSvg">
-        <span
-          v-if="!loading"
-          :class="svgClass || $prefix('mr5')"
-        >
-          <!-- @doc 开启 icon 下自定义图标插槽 -->
-          <slot
-            v-if="$slots.icon"
-            name="icon"
-            :class="svgClass"
-          />
-          <lw-svg
-            v-else
-            v-bind="svgProps"
-            :class="svgClass"
-            :type="componentSvg"
-            v-on="svgProps.on"
-          />
-        </span>
-        <lw-svg
-          v-else
-          type="LoadingOutlined"
-          :class="`${$prefix('fs12')} ${svgClass}`"
-        />
-      </div>
-      <lw-svg
-        v-if="!componentSvg && loading"
-        type="LoadingOutlined"
-        :class="`${$prefix('fs12')} ${svgClass}`"
-      />
-      <!-- @doc link 类型按钮的默认插槽 -->
-      <slot v-else />
-    </a-button>
-    <a
-      v-else
-      v-bind="$attrs"
-      :class="aClass"
-      href="javascript:;"
-    >
-      <!-- @doc a 标签类型按钮的默认插槽 -->
-      <slot />
-    </a>
+<template>
+  <div class="component-crt-crud">
+    嘻嘻嘻嘻嘻嘻嘻
+    <!-- @doc 自定义操作列内容 -->
+    <slot name="customAction"></slot>
+    <!-- @doc 弹窗内容 -->
+    <slot name="modal"></slot>
   </div>
 </template>
+<script lang="ts">
+import { defineComponent } from "vue"
 
-<script setup>
-/** ********** 【import】 *************/
-import { computed } from 'vue'
+export default defineComponent({
+  props: {
+    // @doc 增删改查目标的名称
+    crudName: {
+      type: String,
+      default: "",
+    },
 
-import LwSvg from '../Ant_Svg'
+    // @doc 详情弹窗表单字段配置列表
+    modalFormSchema: {
+      type: Array,
+      default: () => [],
+    },
 
-/** ********** 【defineProps】 *************/
-const props = defineProps({
-  // @doc 是否缩放
-  scale: {
-    type: Boolean,
-    default: false
-  },
-  // @doc svg 的额外类名
-  svgClass: {
-    type: String,
-    default: ''
-  },
-  // @doc svg 图标属性
-  svgProps: {
-    type: Object,
-    default () {
-      return {}
-    }
-  },
-  // @doc 显示的 icon
-  componentSvg: {
-    type: String,
-    default: ''
-  },
-  // @doc 是否禁用
-  disabled: {
-    type: Boolean,
-    default: false
-  },
-  // @doc 是否加载
-  loading: {
-    type: Boolean,
-    default: false
-  },
-  // @doc link 使用a-button的 link a 使用 a 标签-按需使用
-  type: {
-    type: String,
-    default: 'link'
-  },
-  // @doc 按钮的额外类名
-  btnClass: {
-    type: String,
-    default: ''
-  }
-})
+    // @doc 详情弹窗宽度
+    modalWidth: {
+      type: String,
+      default: "1200px",
+    },
 
-/** ********** 【defineEmits】 *************/
+    // @doc 详情弹窗表单label宽度
+    modalLabelWidth: {
+      type: String,
+      default: "300px",
+    },
 
-/** ********** 【vue hooks】【composition api】 *************/
-const aClass = computed(() => {
-  const {
-    btnClass, scale
-  } = props
-  return `${btnClass}${scale ? ' is-scale' : ''}`
-})
+    // @doc 查询表单字段配置列表
+    searchFormSchema: {
+      type: Array,
+      default: () => [],
+    },
 
-/** ********** 【defineExpose】 *************/
+    // @doc 查询表单col组件的span属性
+    colSpan: {
+      type: Number,
+      default: 8,
+    },
+
+    // @doc 表格列，同 a-table 的 columns 参数
+    columns: {
+      type: Array,
+      default: () => [],
+    },
+
+    // @doc 表格rowKey 同 a-table 的 rowKey 参数
+    rowKey: {
+      type: String || null,
+      default: "id",
+    },
+
+    // @doc 是否可选择
+    isSelect: {
+      type: Boolean,
+      default: false,
+    },
+
+    // @doc 是否可导出
+    isDownload: {
+      type: Boolean,
+      default: false,
+    },
+
+    // @doc 是否可删除单行数据
+    isDeleteRow: {
+      type: Boolean,
+      default: false,
+    },
+
+    // @doc 是否可编辑单行数据
+    isEditRow: {
+      type: Boolean,
+      default: false,
+    },
+
+    // @doc 是否可查看单行数据
+    isShowRow: {
+      type: Boolean,
+      default: false,
+    },
+
+    // @doc 查询列表方法
+    searchListFunc: {
+      type: Function,
+      default: () => () => Promise.resolve(),
+    },
+
+    // @doc 查询单行数据方法
+    searchRowFunc: {
+      type: Function,
+      default: () => () => Promise.resolve(),
+    },
+
+    // @doc 添加方法
+    createRowFunc: {
+      type: Function,
+      default: () => () => Promise.resolve(),
+    },
+
+    // @doc 更新方法
+    updateRowFunc: {
+      type: Function,
+      default: () => () => Promise.resolve(),
+    },
+
+    // @doc 删除方法
+    deleteRowFunc: {
+      type: Function,
+      default: () => () => Promise.resolve(),
+    },
+  },
+
+  emits: [
+    // @doc 导出按钮点击
+    "downloadClick",
+    // @doc 添加按钮点击
+    "createClick",
+    // @doc 查看按钮点击
+    "showClick",
+    // @doc 编辑按钮点击
+    "editClick",
+    // @doc 删除按钮点击
+    "deleteClick",
+    // @doc 详情数据变更
+    "detailChange",
+  ],
+
+  methods: {
+    /**
+     * @doc 添加一行
+     */
+    create() {},
+
+    /**
+     * @doc 编辑一行
+     * @param record 该行数据
+     */
+    async edit(record) {},
+
+    /**
+     * @doc 查看一行
+     * @param record 该行数据
+     */
+    async show(record) {},
+
+    /**
+     * @doc 删除一行
+     * @param record 该行数据
+     */
+    async del(record) {},
+  },
+});
 </script>
