@@ -22,7 +22,7 @@ export const genSlots = (ast: ElementNode): GenSlotsResult[] => {
             }
           }
           result.push({
-            name: slot.value.content,
+            name: slot?.value.content,
             ...parseComment({ value: descContent })
           })
         }
