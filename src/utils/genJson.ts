@@ -9,7 +9,7 @@ import { genEvents } from './genEvents'
 import { genDefineProps, genDefinePropsTypescript } from './genDefineProps'
 import { genDefineEmits, genDefineEmitsTypescript } from './genDefineEmits'
 import { genDefineExpose } from './genDefineExpose'
-import { uniqBy, unionBy } from 'lodash'
+import { uniqBy, unionBy, forEach } from 'lodash'
 
 export const genJson = (code: string): GenJsonResult => {
   const { template, script, scriptSetup } = parseSFC(code).descriptor
@@ -93,5 +93,12 @@ export const genJson = (code: string): GenJsonResult => {
   delete json.withDefaults
   if (!json.defineEmitsTypeParameters) delete json.defineEmitsTypeParameters
 
-  return json
+  const resultJson = {}
+  forEach(json, (value, key) => {
+    if (value && value.length) {
+      resultJson[key] = value
+    }
+  })
+
+  return resultJson
 }
