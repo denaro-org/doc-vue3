@@ -1,5 +1,14 @@
 {
-  "slots": [],
+  "slots": [
+    {
+      "name": "customAction",
+      "desc": "自定义操作列内容"
+    },
+    {
+      "name": "modal",
+      "desc": "弹窗内容"
+    }
+  ],
   "defineProps": [
     {
       "name": "crudName",
