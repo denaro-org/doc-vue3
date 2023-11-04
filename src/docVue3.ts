@@ -1,11 +1,9 @@
-import {
-  type Config,
-  type GenJsonResult
-} from './types'
+import type { Config, GenJsonResult } from './types'
+
 import { config as defaultConfig } from './utils/config'
 import { genHtml } from './utils/genHtml'
-import { genMd } from './utils/genMd'
 import { genJson } from './utils/genJson'
+import { genMd } from './utils/genMd'
 
 export const docVue3 = (code, config: Config): string | GenJsonResult => {
   config = Object.assign({}, defaultConfig, config)

@@ -1,18 +1,22 @@
-import { type GenEventsResult } from '../types'
-import { docIdentifierReg } from './config'
-import { parseComment } from './tools'
+import type { GenEventsResult } from '../types'
+import type { Identifier, StringLiteral, TSPropertySignature, TSTypeLiteral } from '@babel/types'
 
-// 提取 defineEmits 文档
-export const genDefineEmits = (eventsNode): GenEventsResult => {
+import { size } from 'lodash'
+
+import { docIdentifierReg } from './config'
+import { parseComment, parseComments } from './tools'
+
+// 提取 defineEmits 文档s
+export const genDefineEmits = (eventsNode: StringLiteral): GenEventsResult => {
   let result: GenEventsResult = {}
 
-  if (eventsNode.leadingComments && eventsNode.leadingComments.length) {
-    const commentNode = eventsNode.leadingComments[0]
-    if (commentNode) {
-      const descContent = commentNode.value.trim()
+  if (size(eventsNode.leadingComments) > 0) {
+    const commentNode = eventsNode?.leadingComments?.[0]
+    if (size(commentNode) > 0) {
+      const descContent = commentNode?.value.trim() as string
       if (docIdentifierReg.test(descContent)) {
         const prop = {
-          name: eventsNode.value,
+          name: String(eventsNode.value),
           ...parseComment(commentNode)
         }
         result = prop
@@ -24,19 +28,19 @@ export const genDefineEmits = (eventsNode): GenEventsResult => {
 }
 
 // 提取 defineEmits 文档, typescript
-export const genDefineEmitsTypescript = (eventsNode): GenEventsResult => {
-  let result: GenEventsResult = {}
+export const genDefineEmitsTypescript = (eventsNode: TSTypeLiteral): GenEventsResult[] => {
+  const result: GenEventsResult[] = []
 
-  eventsNode.members?.forEach(member => {
-    if (member.leadingComments && member.leadingComments.length) {
-      const commentNode = member.leadingComments[0]
-      const descContent = commentNode.value.trim()
-      if (docIdentifierReg.test(descContent)) {
-        const prop = {
-          name: member.parameters[0].typeAnnotation.typeAnnotation.literal.value,
-          ...parseComment(commentNode)
+  eventsNode.members?.forEach((member) => {
+    if (size(member.leadingComments) > 0) {
+      const commentNode = member?.leadingComments
+      if (commentNode !== null) {
+        const stateMember = member as TSPropertySignature
+        const prop: GenEventsResult = {
+          name: (stateMember.key as Identifier).name,
+          ...parseComments(commentNode)
         }
-        result = prop
+        result.push(prop)
       }
     }
   })

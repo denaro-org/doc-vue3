@@ -1,22 +1,22 @@
-import {
-  type MdTable,
-  type MdList
-} from '../types'
-import { genJson } from './genJson'
+import type { MdList, MdTable } from '../types'
+
 import json2md from 'json2md'
+import { size } from 'lodash'
+
+import { genJson } from './genJson'
 
 export const genMd = (code: string): string => {
   const json = genJson(code)
-  // console.log(json)
   const mdList: MdList[] = []
 
-  Object.keys(json).forEach(key => {
-    !['defineEmitsTypeParameters', 'definePropsTypeParameters'].includes(key) && mdList.push({ h2: key })
-    if (['defineEmitsTypeParameters', 'definePropsTypeParameters'].includes(key) && json[key]) {
+  Object.keys(json).forEach((key) => {
+    mdList.push({ h2: key })
+
+    if (['defineEmitsTypeParameters', 'definePropsTypeParameters'].includes(key) && json[key] !== null) {
       mdList.push({ blockquote: `types:【${json[key]}】` })
     } else {
       const docs = json[key]
-      if (docs && docs.length) {
+      if (size(docs) > 0) {
         const table: MdTable = { rows: [] }
         mdList.push({ table })
         switch (key) {
@@ -27,7 +27,7 @@ export const genMd = (code: string): string => {
             break
           case 'props':
           case 'defineProps':
-            table.headers = ['name', 'type', 'desc', 'default', 'required']
+            table.headers = ['name', 'type', 'tsType', 'required', 'desc', 'default']
             break
           case 'methods':
           case 'defineExpose':
@@ -36,22 +36,27 @@ export const genMd = (code: string): string => {
           default:
             break
         }
-        docs.forEach(doc => {
-          if (['methods', 'defineExpose'].includes(key) && doc.params && doc.params.length) {
-            doc.params = doc.params.map(param => {
-              return `${param.name}: ${param.desc}`
-            }).join('</br>')
+        docs.forEach((doc) => {
+          if (doc === undefined) return
+
+          if (['methods', 'defineExpose'].includes(key) && size(doc.params) > 0) {
+            doc.params = doc.params
+              .map((param) => {
+                return `${param.name}: ${param.desc}`
+              })
+              .join('</br>')
           }
-          doc.params = doc.params || ''
-          doc.default = doc.default || ''
-          doc.required = doc.required || 'false'
-          doc.type = doc.type || ''
-          doc.returns = doc.returns || ''
-          table.rows && table.rows.push(doc)
+          doc.params = doc.params ?? '-'
+          doc.default = doc.default ?? '-'
+          doc.required = String(doc.required) ?? 'false'
+          doc.type = doc.type ?? '-'
+          doc.tsType = doc.tsType ?? '-'
+          doc.returns = doc.returns ?? '-'
+          table.rows?.push(doc)
         })
       }
     }
   })
 
-  return json2md(mdList)
+  return Array.isArray(mdList) ? json2md(mdList) : ''
 }

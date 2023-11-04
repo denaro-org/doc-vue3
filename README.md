@@ -116,11 +116,11 @@ docvue xxx.vue xxx.html
 docvue is a function that accepts 2 parameters, the first is the source string and the second is the options object, returns the document data.
 
 ```js
-const docvue = require("doc-vue3");
-const code = `your code`;
-const result = docvue(code); // by default, result is json object
-const mdResult = docvue(code, { type: "md" }); // mdResult is markdown string
-const htmlResult = docvue(code, { type: "html" }); // htmlResult is html string
+const docvue = require('doc-vue3')
+const code = `your code`
+const result = docvue(code) // by default, result is json object
+const mdResult = docvue(code, { type: 'md' }) // mdResult is markdown string
+const htmlResult = docvue(code, { type: 'html' }) // htmlResult is html string
 ```
 
 ### Options
@@ -136,4 +136,3 @@ Specify the type of document, input one of them: "json\md\html"，default is "js
 ## License
 
 MIT
-

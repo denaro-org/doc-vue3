@@ -1,16 +1,21 @@
-import { type GenEventsResult } from '../types'
+import type { GenEventsResult } from '../types'
+import type { ArrayExpression, ObjectProperty, StringLiteral } from '@babel/types'
+
+import { size } from 'lodash'
+
 import { docIdentifierReg } from './config'
 import { parseComment } from './tools'
 
 // 提取事件文档
-export const genEvents = (eventsNode): GenEventsResult[] => {
+export const genEvents = (eventsNode: ObjectProperty): GenEventsResult[] => {
   const result: GenEventsResult[] = []
+  const { elements } = eventsNode.value as ArrayExpression
 
-  eventsNode.value.elements.forEach((node) => {
-    if (node.leadingComments && node.leadingComments.length) {
-      const commentNode = node.leadingComments[0]
-      if (commentNode) {
-        const descContent = commentNode.value.trim()
+  ;(elements as StringLiteral[]).forEach((node) => {
+    if (size(node?.leadingComments) > 0) {
+      const commentNode = node?.leadingComments?.[0]
+      if (size(commentNode) > 0) {
+        const descContent = commentNode?.value.trim() as string
         if (docIdentifierReg.test(descContent)) {
           const prop = {
             name: node.value,

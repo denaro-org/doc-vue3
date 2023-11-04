@@ -1,34 +1,38 @@
-import { type GenSlotsResult } from '../types'
-import { type ElementNode, type TemplateChildNode } from '@vue/compiler-core'
+import type { GenSlotsResult } from '../types'
+import type { Comment } from '@babel/types'
+import type { AttributeNode, ElementNode, TemplateChildNode } from '@vue/compiler-core'
+
+import { size } from 'lodash'
+
 import { docIdentifierReg } from './config'
 import { parseComment } from './tools'
 
 // 提取 slots 文档
 export const genSlots = (ast: ElementNode): GenSlotsResult[] => {
-  const result: GenSlotsResult[] = [];
+  const result: GenSlotsResult[] = []
 
-  (function find (node, index?: number, list?: TemplateChildNode[]) {
+  ;(function find (node, index?: number, list?: TemplateChildNode[]) {
     if (node.tag === 'slot') {
-      const desc = index && list?.length && list[index - 2]
-      if (desc && desc.type === 3) {
+      const desc = (index !== null && list instanceof Array && list[Number(index) - 2]) as TemplateChildNode
+
+      if (desc !== null && desc?.type === 3) {
         const descContent = desc.content.trim()
         if (docIdentifierReg.test(descContent)) {
-          let slot = (node.props.filter((prop) => prop.name === 'name')[0]) as any
-          if (!slot) {
-            slot = {
-              value: {
-                content: 'default'
-              }
-            }
+          const slot = node.props.filter((prop) => prop.name === 'name')[0] as AttributeNode
+
+          const commentPayload: Comment = {
+            type: 'CommentBlock',
+            value: descContent
           }
+
           result.push({
-            name: slot?.value.content,
-            ...parseComment({ value: descContent })
+            name: slot?.value?.content,
+            ...parseComment(commentPayload)
           })
         }
       }
     }
-    if (node.children && node.children.length) {
+    if (size(node.children) > 0) {
       node.children.forEach((n, i) => {
         find(n as ElementNode, i, node.children)
       })

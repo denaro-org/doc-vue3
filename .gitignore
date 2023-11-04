@@ -11,3 +11,5 @@ libs
 dist
 tsconfig.tsbuildinfo
 lib/tsconfig.tsbuildinfo
+.history
+.yalc

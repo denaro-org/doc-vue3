@@ -3,8 +3,8 @@ export interface Config {
 }
 
 export interface Params {
-  name?: string
   desc?: string
+  name?: string
 }
 
 export interface ParseComment {
@@ -16,9 +16,11 @@ export interface GenSlotsResult extends Params {
 }
 
 export interface GenPropsResult extends Params {
-  name?: string
-  type?: string
   default?: string
+  name?: string
+  required?: boolean
+  tsType?: string
+  type?: string
 }
 
 export interface GenMethodsResult extends Params {
@@ -31,25 +33,25 @@ export interface GenEventsResult extends Params {
 }
 
 export interface MdTable {
-  rows?: string[]
   headers?: string[]
+  rows?: string[]
 }
 
 export interface MdList {
-  h2?: string
   blockquote?: string
+  h2?: string
   table?: MdTable
 }
 
 export interface GenJsonResult {
-  slots?: GenSlotsResult[]
-  props?: GenPropsResult[]
-  defineProps?: GenPropsResult[]
- definePropsTypeParameters ?: string
-  withDefaults?: GenPropsResult[]
-  events?: GenEventsResult[]
   defineEmits?: GenEventsResult[]
   defineEmitsTypeParameters?: string
-  methods?: GenMethodsResult[]
   defineExpose?: GenMethodsResult[]
+  defineProps?: GenPropsResult[]
+  definePropsTypeParameters?: string
+  events?: GenEventsResult[]
+  methods?: GenMethodsResult[]
+  props?: GenPropsResult[]
+  slots?: GenSlotsResult[]
+  withDefaults?: GenPropsResult[]
 }

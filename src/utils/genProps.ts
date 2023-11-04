@@ -1,31 +1,44 @@
-import { type GenPropsResult } from '../types'
+import type { GenPropsResult } from '../types'
+import type { Identifier, ObjectExpression, ObjectProperty, SourceLocation, StringLiteral } from '@babel/types'
+
+import { size } from 'lodash'
+
 import { docIdentifierReg } from './config'
-import { parseComment, getLocContent } from './tools'
+import { getLocContent, parseComment } from './tools'
 
 // 提取 props 文档
-export const genProps = (propsNode): GenPropsResult[] => {
+export const genProps = (propsNode: ObjectProperty): GenPropsResult[] => {
   const result: GenPropsResult[] = []
+  const { properties } = propsNode.value as ObjectExpression
 
-  propsNode.value.properties.forEach((node) => {
-    if (node.leadingComments && node.leadingComments.length) {
-      const commentNode = node.leadingComments[0]
-      if (commentNode) {
-        const descContent = commentNode.value.trim()
+  ;(properties as ObjectProperty[]).forEach((node) => {
+    if (size(node.leadingComments) > 0) {
+      const commentNode = node?.leadingComments?.[0]
+      if (size(commentNode) > 0) {
+        const descContent = commentNode?.value.trim() as string
         if (docIdentifierReg.test(descContent)) {
-          const prop = {
-            name: node.key.name,
+          const nodeKey = node.key as Identifier
+
+          const prop: GenPropsResult = {
+            name: nodeKey.name,
             ...parseComment(commentNode)
           }
-          node.value.properties.forEach((item) => {
+
+          const nodeValue = node.value as ObjectExpression
+          ;(nodeValue.properties as ObjectProperty[]).forEach((item) => {
             const valueNode = item.value
-            let value = valueNode.value ?? valueNode.name ?? valueNode.expression?.name
-            if (valueNode.type === 'ArrowFunctionExpression') {
-              value = getLocContent(valueNode.body.loc)
+            const itemNodeKey = item.key as Identifier
+
+            let value = (valueNode as StringLiteral)?.value ?? (valueNode as Identifier).name
+
+            if (valueNode?.type === 'ArrowFunctionExpression') {
+              value = getLocContent(valueNode?.body?.loc as SourceLocation)
             } else {
-              value = getLocContent(valueNode.loc)
+              value = getLocContent(valueNode?.loc as SourceLocation)
             }
-            prop[item.key.name] = value
+            prop[itemNodeKey.name] = value
           })
+
           result.push(prop)
         }
       }

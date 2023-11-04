@@ -21,12 +21,6 @@
     "types": ["@types/node"],
     "outDir": "./lib"
   },
-  "exclude": [
-    "node_modules",
-    "lib"
-  ],
-  "include":[
-    "bin/**/*.ts",
-    "src/**/*.ts"
-  ]
+  "exclude": ["node_modules", "lib"],
+  "include": ["bin/**/*.ts", "src/**/*.ts", ".eslintrc.js"]
 }
