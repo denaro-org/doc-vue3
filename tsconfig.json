@@ -3,6 +3,10 @@
 
   "extends": "@denaro-config/tsconfig/tsconfig.json",
 
+  "compilerOptions": {
+    "outDir": "lib"
+  },
+
   "include": ["bin/**/*.ts", "src/**/*.ts"],
 
   "exclude": ["node_modules", "lib", "dist"]
