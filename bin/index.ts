@@ -9,7 +9,7 @@ const argv = minimist(process.argv.slice(2))
 const inputFilePath = argv._[0]
 const outputFilePath = argv._[1]
 
-let type = outputFilePath?.split('.').pop().trim()
+let type = outputFilePath?.split('.')?.pop()?.trim() as 'json' | 'md' | 'html'
 type = /^(json|md|html)$/.test(type) ? type : config.type
 
 const code = fs.readFileSync(inputFilePath).toString()

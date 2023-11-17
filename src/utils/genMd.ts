@@ -9,11 +9,16 @@ export const genMd = (code: string): string => {
   const json = genJson(code)
   const mdList: MdList[] = []
 
-  Object.keys(json).forEach((key) => {
+  Object.keys(json).forEach(key => {
     mdList.push({ h2: key })
 
-    if (['defineEmitsTypeParameters', 'definePropsTypeParameters'].includes(key) && json[key] !== null) {
-      mdList.push({ blockquote: `types:【${json[key]}】` })
+    if (
+      ['defineEmitsTypeParameters', 'definePropsTypeParameters'].includes(
+        key
+      ) &&
+      json[key] !== null
+    ) {
+      mdList.push({ blockquote: `types:【${json[key] as string}】` })
     } else {
       const docs = json[key]
       if (size(docs) > 0) {
@@ -27,7 +32,14 @@ export const genMd = (code: string): string => {
             break
           case 'props':
           case 'defineProps':
-            table.headers = ['name', 'type', 'tsType', 'required', 'desc', 'default']
+            table.headers = [
+              'name',
+              'type',
+              'tsType',
+              'required',
+              'desc',
+              'default'
+            ]
             break
           case 'methods':
           case 'defineExpose':
@@ -36,24 +48,30 @@ export const genMd = (code: string): string => {
           default:
             break
         }
-        docs.forEach((doc) => {
-          if (doc === undefined) return
+        if (Array.isArray(docs)) {
+          docs.forEach(doc => {
+            if (doc === undefined) return
 
-          if (['methods', 'defineExpose'].includes(key) && size(doc.params) > 0) {
-            doc.params = doc.params
-              .map((param) => {
-                return `${param.name}: ${param.desc}`
-              })
-              .join('</br>')
-          }
-          doc.params = doc.params ?? '-'
-          doc.default = doc.default ?? '-'
-          doc.required = String(doc.required) ?? 'false'
-          doc.type = doc.type ?? '-'
-          doc.tsType = doc.tsType ?? '-'
-          doc.returns = doc.returns ?? '-'
-          table.rows?.push(doc)
-        })
+            if (
+              ['methods', 'defineExpose'].includes(key) &&
+              size(doc.params) > 0 &&
+              Array.isArray(doc.params)
+            ) {
+              doc.params = doc?.params
+                ?.map(param => {
+                  return `${param.name}: ${param.desc}`
+                })
+                .join('</br>')
+            }
+            doc.params = doc.params ?? '-'
+            doc.default = doc.default ?? '-'
+            doc.required = String(doc.required) ?? 'false'
+            doc.type = doc.type ?? '-'
+            doc.tsType = doc.tsType ?? '-'
+            doc.returns = doc.returns ?? '-'
+            table.rows?.push(doc)
+          })
+        }
       }
     }
   })

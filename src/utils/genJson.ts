@@ -22,12 +22,15 @@ import { genProps } from './genProps'
 import { genSlots } from './genSlots'
 import { parseScriptAST, parseSFC } from './tools'
 
-export const traverseDefineComponent = (callNode: CallExpression, json: GenJsonResult): GenJsonResult => {
+export const traverseDefineComponent = (
+  callNode: CallExpression,
+  json: GenJsonResult
+): GenJsonResult => {
   const argNode = callNode.arguments[0] as ObjectExpression
 
   if (argNode.type !== 'ObjectExpression') return json
 
-  argNode.properties.forEach((optionNode) => {
+  argNode.properties.forEach(optionNode => {
     const stateOptionNode = optionNode as ObjectProperty
     const { name: optionNodeName } = stateOptionNode.key as Identifier
 
@@ -48,59 +51,76 @@ export const traverseDefineComponent = (callNode: CallExpression, json: GenJsonR
   return json
 }
 
-export const traverseDefineProps = (callNode: CallExpression, json: GenJsonResult): GenJsonResult => {
+export const traverseDefineProps = (
+  callNode: CallExpression,
+  json: GenJsonResult
+): GenJsonResult => {
   const argNode = callNode.arguments[0] as ObjectExpression
   json.defineProps = []
 
-  callNode?.typeParameters?.params?.forEach((optionNode) => {
+  callNode?.typeParameters?.params?.forEach(optionNode => {
     json.defineProps = genDefinePropsTypescript(optionNode as TSTypeLiteral)
 
     if (optionNode?.type === 'TSTypeReference') {
-      json.definePropsTypeParameters = (optionNode?.typeName as Identifier)?.name
+      json.definePropsTypeParameters = (optionNode?.typeName as Identifier)
+        ?.name
     }
   })
 
-  argNode?.properties?.forEach((optionNode) => {
+  argNode?.properties?.forEach(optionNode => {
     json.defineProps?.push(genDefineProps(optionNode as ObjectProperty))
   })
 
-  json.defineProps = uniqBy(json.defineProps, 'name').filter((item) => Object.keys(item).length)
+  json.defineProps = uniqBy(json.defineProps, 'name').filter(
+    item => Object.keys(item).length
+  )
 
   return json
 }
 
-export const traverseDefineEmits = (callNode: CallExpression, json: GenJsonResult): GenJsonResult => {
+export const traverseDefineEmits = (
+  callNode: CallExpression,
+  json: GenJsonResult
+): GenJsonResult => {
   const argNode = callNode.arguments[0] as ArrayExpression
   json.defineEmits = []
 
-  callNode?.typeParameters?.params?.forEach((optionNode) => {
+  callNode?.typeParameters?.params?.forEach(optionNode => {
     json.defineEmits = genDefineEmitsTypescript(optionNode as TSTypeLiteral)
 
     if (optionNode?.type === 'TSTypeReference') {
-      json.defineEmitsTypeParameters = (optionNode?.typeName as Identifier)?.name
+      json.defineEmitsTypeParameters = (optionNode?.typeName as Identifier)
+        ?.name
     }
   })
 
   if (argNode?.type === 'ArrayExpression') {
-    (argNode?.elements as StringLiteral[]).forEach((optionNode) => {
+    ;(argNode?.elements as StringLiteral[]).forEach(optionNode => {
       json.defineEmits?.push(genDefineEmits(optionNode))
     })
   }
 
-  json.defineEmits = uniqBy(json.defineEmits, 'name').filter((item) => Object.keys(item).length)
+  json.defineEmits = uniqBy(json.defineEmits, 'name').filter(
+    item => Object.keys(item).length
+  )
 
   return json
 }
 
-export const traverseDefineExpose = (callNode: CallExpression, json: GenJsonResult): GenJsonResult => {
+export const traverseDefineExpose = (
+  callNode: CallExpression,
+  json: GenJsonResult
+): GenJsonResult => {
   const argNode = callNode.arguments[0] as ObjectExpression
   json.defineExpose = []
 
-  argNode?.properties?.forEach((optionNode) => {
+  argNode?.properties?.forEach(optionNode => {
     json.defineExpose?.push(genDefineExpose(optionNode as ObjectProperty))
   })
 
-  json.defineExpose = uniqBy(json.defineExpose, 'name').filter((item) => Object.keys(item).length)
+  json.defineExpose = uniqBy(json.defineExpose, 'name').filter(
+    item => Object.keys(item).length
+  )
 
   return json
 }
@@ -114,7 +134,7 @@ export const genJson = (code: string): GenJsonResult => {
     if ((script?.content ?? scriptSetup?.content) !== null) {
       const scriptAST = parseScriptAST(script?.content ?? scriptSetup?.content)
       traverse(scriptAST, {
-        CallExpression (p) {
+        CallExpression(p) {
           const callNode: CallExpression = p.node
           const { name: callNodeName } = callNode.callee as Identifier
           switch (callNodeName) {
@@ -144,7 +164,7 @@ export const genJson = (code: string): GenJsonResult => {
     throw new Error('解析失败，请检查代码是否符合规范')
   }
 
-  const resultJson = {}
+  const resultJson: GenJsonResult = {}
   forEach(json, (value, key) => {
     if (size(value) > 0) {
       resultJson[key] = value

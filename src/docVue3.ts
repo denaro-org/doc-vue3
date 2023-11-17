@@ -5,7 +5,10 @@ import { genHtml } from './utils/genHtml'
 import { genJson } from './utils/genJson'
 import { genMd } from './utils/genMd'
 
-export const docVue3 = (code, config: Config): string | GenJsonResult => {
+export const docVue3 = (
+  code: string,
+  config: Config
+): string | GenJsonResult => {
   config = Object.assign({}, defaultConfig, config)
 
   switch (config.type) {

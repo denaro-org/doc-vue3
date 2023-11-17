@@ -7,15 +7,20 @@ export interface Params {
   name?: string
 }
 
-export interface ParseComment {
-  params?: Params[]
+type ParseCommentParams = Record<
+  string,
+  string | undefined | boolean | Params[]
+>
+
+export interface ParseComment extends ParseCommentParams {
+  params?: Params[] | string
 }
 
-export interface GenSlotsResult extends Params {
+export interface GenSlotsResult extends ParseComment {
   name?: string
 }
 
-export interface GenPropsResult extends Params {
+export interface GenPropsResult extends ParseComment, ParseCommentParams {
   default?: string
   name?: string
   required?: boolean
@@ -23,18 +28,24 @@ export interface GenPropsResult extends Params {
   type?: string
 }
 
-export interface GenMethodsResult extends Params {
+export interface GenMethodsResult extends ParseComment {
   name?: string
 }
 
-export interface GenEventsResult extends Params {
+export interface GenEventsResult extends ParseComment {
   name?: string
   param?: string
 }
 
+type GenResult =
+  | GenEventsResult[]
+  | GenMethodsResult[]
+  | GenPropsResult[]
+  | GenSlotsResult[]
+
 export interface MdTable {
   headers?: string[]
-  rows?: string[]
+  rows?: GenResult
 }
 
 export interface MdList {
@@ -43,7 +54,9 @@ export interface MdList {
   table?: MdTable
 }
 
-export interface GenJsonResult {
+type ResultValue = GenResult | undefined | string
+
+export interface GenJsonResult extends Record<string, ResultValue> {
   defineEmits?: GenEventsResult[]
   defineEmitsTypeParameters?: string
   defineExpose?: GenMethodsResult[]

@@ -15,7 +15,7 @@
       "desc": "增删改查目标的名称",
       "type": "String",
       "required": "true",
-      "default": "\"\""
+      "default": "''"
     },
     {
       "name": "modalFormSchema",
@@ -27,13 +27,13 @@
       "name": "modalWidth",
       "desc": "详情弹窗宽度",
       "type": "String",
-      "default": "\"1200px\""
+      "default": "'1200px'"
     },
     {
       "name": "modalLabelWidth",
       "desc": "详情弹窗表单label宽度",
       "type": "String",
-      "default": "\"300px\""
+      "default": "'300px'"
     },
     {
       "name": "searchFormSchema",
@@ -57,7 +57,7 @@
       "name": "rowKey",
       "desc": "表格rowKey 同 a-table 的 rowKey 参数",
       "type": "String || null",
-      "default": "\"id\""
+      "default": "'id'"
     },
     {
       "name": "isSelect",

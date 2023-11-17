@@ -30,12 +30,14 @@ export const genDefineProps = (propsNode: ObjectProperty): GenPropsResult => {
         ...parseComment(commentNode)
       }
       const valueNode = propsNode.value as ObjectExpression
-      ;(valueNode.properties as ObjectProperty[]).forEach((item) => {
+      ;(valueNode.properties as ObjectProperty[]).forEach(item => {
         const valueNode = item.value
         const itemNodeKey = item.key as Identifier
 
         if (size(valueNode) > 0) {
-          let value = (valueNode as StringLiteral)?.value ?? (valueNode as Identifier).name
+          let value =
+            (valueNode as StringLiteral)?.value ??
+            (valueNode as Identifier).name
           if (valueNode?.type === 'ArrowFunctionExpression') {
             value = getLocContent(valueNode?.body?.loc as SourceLocation)
           } else {
@@ -59,10 +61,12 @@ export const genDefineProps = (propsNode: ObjectProperty): GenPropsResult => {
 }
 
 // 提取 defineProps 文档, typescript
-export const genDefinePropsTypescript = (propsNode: TSTypeLiteral): GenPropsResult[] => {
+export const genDefinePropsTypescript = (
+  propsNode: TSTypeLiteral
+): GenPropsResult[] => {
   const result: GenPropsResult[] = []
 
-  propsNode.members?.forEach((member) => {
+  propsNode.members?.forEach(member => {
     if (size(member.leadingComments) > 0) {
       const commentNode = member?.leadingComments
       if (commentNode !== null) {

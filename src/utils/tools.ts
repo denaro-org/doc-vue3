@@ -14,7 +14,9 @@ export const parseSFC = (code: string): SFCParseResult => {
 }
 
 // 解析 JS AST
-export const parseScriptAST = (code?: string): ReturnType<typeof babelParse> => {
+export const parseScriptAST = (
+  code?: string
+): ReturnType<typeof babelParse> => {
   scriptCode = code as string
   return babelParse(scriptCode, {
     allowImportExportEverywhere: true,
@@ -31,7 +33,8 @@ export const getLocContent = (loc: SourceLocation): string => {
 
   const lastIdx = lines.length - 1
   if (lines.length === 1) {
-    const start = lines[0].indexOf('?: ') > 0 ? loc.start.column - 1 : loc.start.column
+    const start =
+      lines[0].indexOf('?: ') > 0 ? loc.start.column - 1 : loc.start.column
     return lines[0].substring(start, loc.end.column)
   }
 
@@ -49,9 +52,11 @@ export const parseComment = (commentNode?: Comment): ParseComment => {
   const { value } = commentNode ?? {}
   let lines = value?.split(/\r?\n/)
 
-  lines = lines?.map((l) => l.trim().replace(/^\*\s*/, '')).filter((i) => Boolean(i))
+  lines = lines
+    ?.map(l => l.trim().replace(/^\*\s*/, ''))
+    .filter(i => Boolean(i))
 
-  lines?.forEach((line) => {
+  lines?.forEach(line => {
     const [key, ...desc] = line.split(' ')
     const docKey = key.replace(/^@/, '').replace(/^doc/, 'desc')
 
@@ -61,7 +66,7 @@ export const parseComment = (commentNode?: Comment): ParseComment => {
         name: paramName.trim(),
         desc: paramDesc.join(' ').trim()
       }
-      if (size(result.params) > 0) {
+      if (size(result.params) > 0 && Array.isArray(result.params)) {
         result?.params?.push(param)
       } else {
         result.params = [param]
@@ -81,7 +86,7 @@ export const parseComments = (comments?: Comment[]): ParseComment => {
   }
 
   let result: ParseComment = {}
-  comments?.forEach((item) => {
+  comments?.forEach(item => {
     result = { ...result, ...parseComment(item) }
   })
   return result

@@ -7,7 +7,9 @@ import { docIdentifierReg } from './config'
 import { parseComment } from './tools'
 
 // 提取 defineEmits 文档
-export const genDefineExpose = (methodsNode: ObjectProperty): GenMethodsResult => {
+export const genDefineExpose = (
+  methodsNode: ObjectProperty
+): GenMethodsResult => {
   let result: GenMethodsResult = {}
 
   if (size(methodsNode.leadingComments) > 0) {

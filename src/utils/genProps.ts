@@ -1,5 +1,11 @@
 import type { GenPropsResult } from '../types'
-import type { Identifier, ObjectExpression, ObjectProperty, SourceLocation, StringLiteral } from '@babel/types'
+import type {
+  Identifier,
+  ObjectExpression,
+  ObjectProperty,
+  SourceLocation,
+  StringLiteral
+} from '@babel/types'
 
 import { size } from 'lodash'
 
@@ -11,7 +17,7 @@ export const genProps = (propsNode: ObjectProperty): GenPropsResult[] => {
   const result: GenPropsResult[] = []
   const { properties } = propsNode.value as ObjectExpression
 
-  ;(properties as ObjectProperty[]).forEach((node) => {
+  ;(properties as ObjectProperty[]).forEach(node => {
     if (size(node.leadingComments) > 0) {
       const commentNode = node?.leadingComments?.[0]
       if (size(commentNode) > 0) {
@@ -25,11 +31,13 @@ export const genProps = (propsNode: ObjectProperty): GenPropsResult[] => {
           }
 
           const nodeValue = node.value as ObjectExpression
-          ;(nodeValue.properties as ObjectProperty[]).forEach((item) => {
+          ;(nodeValue.properties as ObjectProperty[]).forEach(item => {
             const valueNode = item.value
             const itemNodeKey = item.key as Identifier
 
-            let value = (valueNode as StringLiteral)?.value ?? (valueNode as Identifier).name
+            let value =
+              (valueNode as StringLiteral)?.value ??
+              (valueNode as Identifier).name
 
             if (valueNode?.type === 'ArrowFunctionExpression') {
               value = getLocContent(valueNode?.body?.loc as SourceLocation)

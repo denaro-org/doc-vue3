@@ -1,5 +1,10 @@
 import type { GenEventsResult } from '../types'
-import type { Identifier, StringLiteral, TSPropertySignature, TSTypeLiteral } from '@babel/types'
+import type {
+  Identifier,
+  StringLiteral,
+  TSPropertySignature,
+  TSTypeLiteral
+} from '@babel/types'
 
 import { size } from 'lodash'
 
@@ -28,10 +33,12 @@ export const genDefineEmits = (eventsNode: StringLiteral): GenEventsResult => {
 }
 
 // 提取 defineEmits 文档, typescript
-export const genDefineEmitsTypescript = (eventsNode: TSTypeLiteral): GenEventsResult[] => {
+export const genDefineEmitsTypescript = (
+  eventsNode: TSTypeLiteral
+): GenEventsResult[] => {
   const result: GenEventsResult[] = []
 
-  eventsNode.members?.forEach((member) => {
+  eventsNode.members?.forEach(member => {
     if (size(member.leadingComments) > 0) {
       const commentNode = member?.leadingComments
       if (commentNode !== null) {

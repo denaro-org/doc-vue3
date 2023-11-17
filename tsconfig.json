@@ -1,26 +1,9 @@
 {
-  "compilerOptions": {
-    "composite": true,
-    "declaration": true,
-    "declarationMap": false,
-    "lib": ["DOM", "ES2020"],
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "newLine": "lf",
-    "noEmitOnError": true,
-    "noImplicitAny": false,
-    "allowJs": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "sourceMap": false,
-    "strict": true,
-    "strictNullChecks": true,
-    "esModuleInterop": true,
-    "target": "ES2018",
-    "jsx": "preserve",
-    "types": ["@types/node"],
-    "outDir": "./lib"
-  },
-  "exclude": ["node_modules", "lib"],
-  "include": ["bin/**/*.ts", "src/**/*.ts", ".eslintrc.js"]
+  "$schema": "https://json.schemastore.org/tsconfig",
+
+  "extends": "@denaro-config/tsconfig/tsconfig.json",
+
+  "include": ["bin/**/*.ts", "src/**/*.ts"],
+
+  "exclude": ["node_modules", "lib", "dist"]
 }

@@ -2,56 +2,73 @@
   "name": "doc-vue3",
   "version": "1.1.0",
   "description": "A API document generator for Vue3 single file component.",
-  "main": "lib/src/index.js",
-  "types": "lib/src/index.d.ts",
-  "scripts": {
-    "format": "prettier --write .",
-    "build": "tsc --build",
-    "lint": "eslint --ext mjs,js,ts,tsx,cjs --fix ."
-  },
-  "bin": {
-    "docvue3": "lib/bin/index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/denaro-org/doc-vue3.git"
-  },
   "keywords": [
     "doc",
     "vue",
     "marked"
   ],
-  "author": "vxhly <pengchengou@gmail.com>",
-  "license": "MIT",
+  "homepage": "https://github.com/denaro-org/doc-vue3#readme",
   "bugs": {
     "url": "https://github.com/denaro-org/doc-vue3/issues"
   },
-  "homepage": "https://github.com/denaro-org/doc-vue3#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/denaro-org/doc-vue3.git"
+  },
+  "license": "MIT",
+  "author": "vxhly <pengchengou@gmail.com>",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
+  "bin": {
+    "docvue3": "lib/bin/index.js"
+  },
   "files": [
     "lib/bin",
     "lib/src"
   ],
-  "devDependencies": {
-    "@babel/types": "^7.23.0",
-    "@types/lodash": "^4.14.200",
-    "@types/node": "^17.0.45",
-    "@typescript-eslint/eslint-plugin": "^6.4.0",
-    "eslint": "^8.0.1", 
-    "eslint-config-standard-with-typescript": "^39.1.1",
-    "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-n": "^15.0.0 || ^16.0.0 ", 
-    "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-typescript-sort-keys": "^3.1.0",
-    "fs-extra": "^11.1.1", 
-    "typescript": "^4.9.5"
+  "scripts": {
+    "build": "tsc --build",
+    "commit": "git add .&& cz",
+    "lint": "eslint --ext mjs,js,jsx,ts,tsx,cjs --fix .",
+    "prettier": "prettier . --write"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown",
+    "*.{mjs,js,jsx,ts,tsx,cjs}": "eslint --fix",
+    "package.json": "sort-package-json"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-git"
+    }
   },
   "dependencies": {
-    "@babel/traverse": "^7.23.2",
-    "@vue/compiler-core": "^3.3.7",
-    "@vue/compiler-sfc": "^3.3.7",
-    "json2md": "^1.13.0",
+    "@babel/traverse": "^7.23.3",
+    "@vue/compiler-core": "^3.3.8",
+    "@vue/compiler-sfc": "^3.3.8",
+    "json2md": "^2.0.0",
     "lodash": "^4.17.21",
-    "marked": "^4.3.0",
+    "marked": "^10.0.0",
     "minimist": "^1.2.8"
+  },
+  "devDependencies": {
+    "@babel/types": "^7.23.3",
+    "@denaro-config/config-commitlint": "^1.1.1",
+    "@denaro-config/config-cz-git": "^1.1.1",
+    "@denaro-config/eslint-config-prettier": "^1.1.1",
+    "@denaro-config/eslint-config-typescript": "^1.1.1",
+    "@denaro-config/prettier": "^1.1.1",
+    "@denaro-config/tsconfig": "^1.1.1",
+    "@types/babel__traverse": "^7.20.4",
+    "@types/json2md": "^1.5.4",
+    "@types/lodash": "^4.14.201",
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^20.9.0",
+    "eslint": "^8.53.0",
+    "fs-extra": "^11.1.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.1.0",
+    "sort-package-json": "^2.6.0",
+    "typescript": "^5.2.2"
   }
 }

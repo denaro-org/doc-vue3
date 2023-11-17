@@ -5,5 +5,3 @@ demo/*
 tsconfig.tsbuildinfo
 *-lock.json
 lib/*
-commitlint.config.*
-cz.config.*
