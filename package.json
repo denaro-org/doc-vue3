@@ -30,6 +30,7 @@
     "build": "tsc --build",
     "commit": "git add .&& cz",
     "lint": "eslint --ext mjs,js,jsx,ts,tsx,cjs --fix .",
+    "prepare": "husky install",
     "prettier": "prettier . --write"
   },
   "lint-staged": {
